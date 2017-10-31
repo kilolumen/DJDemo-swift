@@ -13,9 +13,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
     var familyNames: Array<String> = []
     var fontNamesArray = [Array<Any>]()
 
-    var fontSize = 16
-    var lineHeight = 21
-    var font = UIFont.systemFont(ofSize: 16)
+    var fontSize = 16.0
+    var lineHeight = 21.0
+    var font = UIFont.systemFont(ofSize: 16.0)
 
     @IBOutlet weak var fontSizeTextField: UITextField!
     @IBOutlet weak var lineHeightTextField: UITextField!
@@ -57,9 +57,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
     func updateText() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = CGFloat(lineHeight)
-        let attributes = [NSFontAttributeName: UIFont(name: font.fontName, size: CGFloat(fontSize)),
-                          NSParagraphStyleAttributeName: paragraphStyle]
-        textView.attributedText = NSAttributedString.init(string: textView.text, attributes: attributes)
+        let attributes: [NSAttributedStringKey : Any] = [.font: UIFont(name: font.fontName, size: CGFloat(fontSize))!,
+                          .paragraphStyle: paragraphStyle]
+        textView.attributedText = NSAttributedString(string: textView.text, attributes: attributes)
     }
 
     /**
@@ -97,13 +97,13 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellReuseIdentifier", for: indexPath)
-        cell.textLabel?.attributedText = NSAttributedString(string: fontNamesArray[indexPath.section][indexPath.row] as! String, attributes: [NSFontAttributeName: UIFont(name: fontNamesArray[indexPath.section][indexPath.row] as! String, size: 16)!])
+        cell.textLabel?.attributedText = NSAttributedString(string: fontNamesArray[indexPath.section][indexPath.row] as! String, attributes: [NSAttributedStringKey.font: UIFont(name: fontNamesArray[indexPath.section][indexPath.row] as! String, size: 16)!])
         return cell
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerReuseIdentifier")
-        header?.textLabel?.attributedText = NSAttributedString.init(string: familyNames[section], attributes: [NSFontAttributeName: UIFont.init(name: familyNames[section], size: 16)!])
+        header?.textLabel?.attributedText = NSAttributedString.init(string: familyNames[section], attributes: [NSAttributedStringKey.font: UIFont.init(name: familyNames[section], size: 16)!])
         return header
     }
 
@@ -117,13 +117,13 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         
         if textField == fontSizeTextField {
             if (textField.text?.lengthOfBytes(using: .utf8))! > 0 {
-                fontSize = Int(textField.text ?? "16")!
+                fontSize = Double(textField.text ?? "16")!
             } else {
                 fontSize = 16
             }
         } else if textField == lineHeightTextField {
             if (textField.text?.lengthOfBytes(using: .utf8))! > 0 {
-                lineHeight = Int(textField.text ?? "16")!
+                lineHeight = Double(textField.text ?? "16")!
             } else {
                 lineHeight = 21
             }
